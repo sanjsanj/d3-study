@@ -1,13 +1,14 @@
 import React from "react";
 
 import Axis from "../Axis";
-import { barChartData } from "../../data/barChart";
+import BarChart from "../BarChart";
 
 function App() {
-  console.log(barChartData);
   return (
-    <svg width="800" height="400" id="svg">
-      <Axis x={20} y={50} />
+    <svg width="600" height="400" id="svg">
+      {/* <Axis x={20} y={50} /> */}
+
+      <BarChart x={20} y={100} />
     </svg>
   );
 }
