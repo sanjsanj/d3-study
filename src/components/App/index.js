@@ -2,6 +2,8 @@ import React from "react";
 import * as d3 from "d3";
 import _ from "lodash";
 
+import "./styles.css";
+
 import Axis from "../Axis";
 import BarChart from "../BarChart";
 import UsSalaries from "../UsSalaries";

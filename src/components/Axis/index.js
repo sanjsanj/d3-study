@@ -2,15 +2,14 @@ import * as d3 from "d3";
 
 import BlackBox from "../../helpers/blackBox";
 
-const Axis = BlackBox(function D3render(anchor) {
-  const scale = d3
-    .scaleLinear()
-    .domain([0, 100])
-    .range([0, 200]);
+const Axis = BlackBox(function D3render() {
+  const axis = d3
+    .axisLeft()
+    .tickFormat(d => `${d3.format(".2s")(d)}`)
+    .scale(this.props.scale)
+    .ticks(this.props.data.length);
 
-  const axis = d3.axisBottom(scale);
-
-  d3.select(anchor.current).call(axis);
+  d3.select(this.anchorRef.current).call(axis);
 });
 
 export default Axis;

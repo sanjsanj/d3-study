@@ -1,13 +1,19 @@
 import React from "react";
 
-export default function blackBox(D3render) {
-  return function Blackbox(props) {
-    const anchor = React.createRef();
+export default function D3blackbox(D3render) {
+  return class Blackbox extends React.Component {
+    anchorRef = React.createRef();
 
-    React.useEffect(() => {
-      D3render(anchor);
-    }, [anchor, props]);
+    componentDidMount() {
+      D3render.call(this);
+    }
+    componentDidUpdate() {
+      D3render.call(this);
+    }
 
-    return <g transform={`translate(${props.x}, ${props.y})`} ref={anchor} />;
+    render() {
+      const { x, y } = this.props;
+      return <g transform={`translate(${x}, ${y})`} ref={this.anchorRef} />;
+    }
   };
 }
