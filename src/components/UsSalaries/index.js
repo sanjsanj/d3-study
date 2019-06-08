@@ -9,6 +9,7 @@ import CountyMap from "../CountyMap";
 import Histogram from "../Histogram";
 import MedianLine from "../MedianLine";
 import { Title, Description } from "../Meta";
+import Controls from "../Controls";
 
 class App extends Component {
   state = {
@@ -46,7 +47,7 @@ class App extends Component {
   updateDataFilter = (filter, filteredBy) => {
     this.setState({
       salariesFilter: filter,
-      filteredBy: filteredBy,
+      filteredBy,
     });
   };
 
@@ -135,6 +136,11 @@ class App extends Component {
             y={10}
           />
         </svg>
+
+        <Controls
+          updateDataFilter={this.updateDataFilter}
+          data={techSalaries}
+        />
       </div>
     );
   }
