@@ -1,15 +1,17 @@
+import React from "react";
 import * as d3 from "d3";
+import { useD3 } from "d3blackbox";
 
-import BlackBox from "../../helpers/blackBox";
+export default function Axis({ scale, data, x, y }) {
+  const ref = useD3(anchor => {
+    const axis = d3
+      .axisLeft()
+      .tickFormat(d => `${d3.format(".2s")(d)}`)
+      .scale(scale)
+      .ticks(data.length);
 
-const Axis = BlackBox(function D3render() {
-  const axis = d3
-    .axisLeft()
-    .tickFormat(d => `${d3.format(".2s")(d)}`)
-    .scale(this.props.scale)
-    .ticks(this.props.data.length);
+    d3.select(anchor).call(axis);
+  });
 
-  d3.select(this.anchorRef.current).call(axis);
-});
-
-export default Axis;
+  return <g transform={`translate(${x}, ${y})`} ref={ref} />;
+}

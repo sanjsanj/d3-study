@@ -7,6 +7,7 @@ import "./styles.css";
 import Axis from "../Axis";
 import BarChart from "../BarChart";
 import UsSalaries from "../UsSalaries";
+import Alphabet from "../Alphabet";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
       </svg> */}
 
       <UsSalaries />
+
+      {/* <svg width="100%" height="600">
+        <Alphabet x={32} y={300} />
+      </svg> */}
     </>
   );
 }

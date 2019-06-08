@@ -11,11 +11,16 @@ const MedianLine = ({
   x,
   y,
 }) => {
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, value)])
-    .range([height - y - bottomMargin, 0]);
-  const line = d3.line()([[0, 5], [width, 5]]);
+  const yScale = React.useMemo(
+    () =>
+      d3
+        .scaleLinear()
+        .domain([0, d3.max(data, value)])
+        .range([height - y - bottomMargin, 0]),
+    [bottomMargin, data, height, value, y]
+  );
+
+  const line = React.useMemo(() => d3.line()([[0, 5], [width, 5]]), [width]);
 
   const medianValue = median || d3.median(data, value);
 

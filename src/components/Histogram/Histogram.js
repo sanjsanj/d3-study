@@ -4,66 +4,91 @@ import * as d3 from "d3";
 import Axis from "../Axis";
 import HistogramBar from "./HistogramBar";
 
-export default class Histogram extends React.Component {
-  state = {
-    widthScale: d3.scaleLinear(),
-    histogram: d3.histogram(),
-    yScale: d3.scaleLinear(),
+function makeBar({ bar, N, yScale, widthScale, axisMargin }) {
+  let percent = (bar.length / N) * 100;
+
+  let props = {
+    height: yScale(bar.x0) - yScale(bar.x1),
+    key: "histogram-bar-" + bar.x0,
+    width: widthScale(bar.length),
+    y: yScale(bar.x1),
+    x: axisMargin,
+    percent,
   };
 
-  static getDerivedStateFromProps(props, state) {
-    let { histogram, widthScale, yScale } = state;
+  return <HistogramBar {...props} />;
+}
 
-    histogram.thresholds(props.bins).value(props.value);
+function useHistogram({
+  bottomMargin,
+  axisMargin,
+  height,
+  value,
+  width,
+  bins,
+  data,
+  y,
+}) {
+  const bars = React.useMemo(
+    () =>
+      d3
+        .histogram()
+        .thresholds(bins)
+        .value(value)(data),
+    [bins, value, data]
+  );
 
-    const bars = histogram(props.data),
-      counts = bars.map(d => d.length);
-
-    widthScale
+  const widthScale = React.useMemo(() => {
+    const counts = bars.map(d => d.length);
+    return d3
+      .scaleLinear()
       .domain([d3.min(counts), d3.max(counts)])
-      .range([0, props.width - props.axisMargin]);
+      .range([0, width - axisMargin]);
+  }, [width, axisMargin, bars]);
 
-    yScale
-      .domain([0, d3.max(bars, d => d.x1)])
-      .range([props.height - props.y - props.bottomMargin, 0]);
+  const yScale = React.useMemo(
+    () =>
+      d3
+        .scaleLinear()
+        .domain([0, d3.max(bars, d => d.x1)])
+        .range([height - y - bottomMargin, 0]),
+    [height, y, bottomMargin, bars]
+  );
 
-    return {
-      ...state,
-      widthScale,
-      histogram,
-      yScale,
-    };
-  }
+  return { bars, widthScale, yScale };
+}
 
-  makeBar = bar => {
-    const { yScale, widthScale } = this.state;
+export default function Histogram({
+  bottomMargin,
+  axisMargin,
+  height,
+  value,
+  width,
+  data,
+  bins,
+  x,
+  y,
+}) {
+  const { bars, widthScale, yScale } = useHistogram({
+    bottomMargin,
+    axisMargin,
+    height,
+    value,
+    width,
+    bins,
+    data,
+    y,
+  });
 
-    let percent = (bar.length / this.props.data.length) * 100;
+  const N = data.length;
 
-    let props = {
-      height: yScale(bar.x0) - yScale(bar.x1),
-      key: "histogram-bar-" + bar.x0,
-      width: widthScale(bar.length),
-      x: this.props.axisMargin,
-      y: yScale(bar.x1),
-      percent: percent,
-    };
-
-    return <HistogramBar {...props} />;
-  };
-
-  render() {
-    const { histogram, yScale } = this.state,
-      { x, y, data, axisMargin } = this.props;
-
-    const bars = histogram(data);
-
-    return (
-      <g className="histogram" transform={`translate(${x}, ${y})`}>
-        <g className="bars">{bars.map(this.makeBar)}</g>
-
-        <Axis x={axisMargin - 3} y={0} data={bars} scale={yScale} />
+  return (
+    <g className="histogram" transform={`translate(${x}, ${y})`}>
+      <g className="bars">
+        {bars.map(bar => makeBar({ bar, N, yScale, widthScale, axisMargin }))}
       </g>
-    );
-  }
+
+      <Axis x={axisMargin - 3} y={0} data={bars} scale={yScale} />
+    </g>
+  );
 }
