@@ -8,6 +8,7 @@ import Axis from "../Axis";
 import BarChart from "../BarChart";
 import UsSalaries from "../UsSalaries";
 import Alphabet from "../Alphabet";
+import ChristmasTrees from "../ChristmasTrees";
 
 function App() {
   return (
@@ -18,11 +19,13 @@ function App() {
         <BarChart x={20} y={50} />
       </svg> */}
 
-      <UsSalaries />
+      {/* <UsSalaries /> */}
 
       {/* <svg width="100%" height="600">
         <Alphabet x={32} y={300} />
       </svg> */}
+
+      <ChristmasTrees />
     </>
   );
 }
