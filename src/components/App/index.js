@@ -9,10 +9,11 @@ import BarChart from "../BarChart";
 import UsSalaries from "../UsSalaries";
 import Alphabet from "../Alphabet";
 import ChristmasTrees from "../ChristmasTrees";
+import CandySales from "../CandySales";
 
 function App() {
   return (
-    <>
+    <div style={{ fontFamily: "sans-serif" }}>
       {/* <svg width="600" height="400" id="svg">
         <Axis x={20} y={50} />
 
@@ -25,8 +26,10 @@ function App() {
         <Alphabet x={32} y={300} />
       </svg> */}
 
-      <ChristmasTrees />
-    </>
+      {/* <ChristmasTrees /> */}
+
+      <CandySales />
+    </div>
   );
 }
 
