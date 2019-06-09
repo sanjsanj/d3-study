@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 import { useD3 } from "d3blackbox";
+import { v4 } from "uuid";
 
 const BottomAxis = ({ scale, x, y }) => {
   const ref = useD3(anchor => {
@@ -29,7 +30,13 @@ const LeftAxis = ({ scale, x, y }) => {
   return <g transform={`translate(${x}, ${y})`} ref={ref} />;
 };
 
-export default function ResponsiveChart({ data, width, height }) {
+export default function ResponsiveChart({
+  data,
+  width,
+  height,
+  mouseEnter,
+  mouseLeave,
+}) {
   const margin = { left: 40, bottom: 40 };
 
   const xScale = d3
@@ -40,7 +47,7 @@ export default function ResponsiveChart({ data, width, height }) {
   const yScale = d3
     .scaleLinear()
     .domain([0, d3.max(data, d => d.share)])
-    .range([height, 0]);
+    .range([height - margin.bottom, margin.bottom]);
 
   const line = d3
     .line()
@@ -54,8 +61,21 @@ export default function ResponsiveChart({ data, width, height }) {
         <path d={line(data)} fill="none" stroke="#333" />
       </g>
 
+      <g>
+        {data.map(d => (
+          <circle
+            style={{ fill: "none", stroke: "black", r: 6 }}
+            onMouseEnter={() => mouseEnter(d)}
+            onMouseLeave={mouseLeave}
+            cy={yScale(d.share)}
+            cx={xScale(d.year)}
+            key={v4()}
+          />
+        ))}
+      </g>
+
       <BottomAxis scale={xScale} x={0} y={height - margin.bottom} />
-      <LeftAxis scale={yScale} x={margin.left} y={-margin.bottom} />
+      <LeftAxis scale={yScale} x={margin.left} y={0} />
     </>
   );
 }

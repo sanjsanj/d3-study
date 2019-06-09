@@ -9,6 +9,8 @@ export default function Responsive() {
   const [data, setData] = React.useState(undefined);
   const [height, setHeight] = React.useState(0);
   const [width, setWidth] = React.useState(0);
+  const defaultText = "Hover over a point";
+  const [text, setText] = React.useState(defaultText);
 
   React.useEffect(() => {
     (async () => {
@@ -37,13 +39,31 @@ export default function Responsive() {
     return () => window.removeEventListener("resize", measureSVG);
   }, [svgRef]);
 
+  function mouseEnter(d) {
+    setText(`${d.share}% in ${d.year}`);
+  }
+
+  function mouseLeave(e) {
+    setText(defaultText);
+  }
+
   return (
     <>
       <h1>% of market share for PG movies (by revenue)</h1>
 
       <svg width="100%" height={400} ref={svgRef}>
-        {data && <ResponsiveChart data={data} width={width} height={height} />}
+        {data && (
+          <ResponsiveChart
+            mouseEnter={mouseEnter}
+            mouseLeave={mouseLeave}
+            height={height}
+            width={width}
+            data={data}
+          />
+        )}
       </svg>
+
+      <p>{text}</p>
     </>
   );
 }
