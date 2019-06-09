@@ -40,19 +40,19 @@ export default function CandySales({ x = 0, y = 0 }) {
         <g transform={`translate(${x},${y})`}>
           {data.map(d => (
             <CandyJar
+              height={height - yScale(d.sales) - margin.top - margin.bottom}
               delay={d.week * Math.random() * 100}
-              height={height - yScale(d.sales)}
-              x={xScale(d.week)}
+              x={xScale(d.week) + margin.left}
+              y={height - margin.bottom}
               type={`😎`}
               key={v4()}
-              y={height}
             />
           ))}
 
           <BottomAxis
-            scale={xScale}
-            x={margin.left}
             y={height - margin.bottom}
+            x={margin.left}
+            scale={xScale}
           />
           <LeftAxis scale={yScale} x={margin.left} y={margin.top} />
         </g>

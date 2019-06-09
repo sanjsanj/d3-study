@@ -11,7 +11,7 @@ function candyYTween(oldY, newY) {
   };
 }
 
-export default function Candy({ delay, propX, propY, type }) {
+export default function Candy({ delay, x: propX, y: propY, type }) {
   const ref = React.createRef();
 
   const [stateX, setStateX] = React.useState(Math.random() * 600);
@@ -25,14 +25,12 @@ export default function Candy({ delay, propX, propY, type }) {
       .duration(1500)
       .delay(delay)
       .ease(d3.easeLinear)
-      // .attrTween("y", candyYTween(stateY, propY))
+      .attrTween("y", candyYTween(stateY, propY))
       .attr("x", propX)
-      .attr("y", propY)
       .on("end", () => {
-        setStateX(propX);
         setStateY(propY);
       });
-  }, [delay, propX, propY, ref]);
+  }, [delay, propX, propY, ref, stateY]);
 
   return (
     <text x={stateX} y={stateY} style={{ fontSize: 12 }} ref={ref}>
