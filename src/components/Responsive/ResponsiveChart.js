@@ -5,6 +5,13 @@ import { useD3 } from "d3blackbox";
 import { v4 } from "uuid";
 
 const BottomAxis = ({ scale, x, y }) => {
+  const tickWidth = 60;
+  const width = scale.range()[1] - scale.range()[0];
+  const tickN = Math.floor(width / tickWidth);
+  const keepEveryNth = Math.floor(scale.domain().length / tickN);
+
+  scale.domain(scale.domain().filter((_, i) => i % keepEveryNth === 0));
+
   const ref = useD3(anchor => {
     const axis = d3
       .axisBottom()
@@ -31,11 +38,11 @@ const LeftAxis = ({ scale, x, y }) => {
 };
 
 export default function ResponsiveChart({
-  data,
-  width,
-  height,
   mouseEnter,
   mouseLeave,
+  height,
+  width,
+  data,
 }) {
   const margin = { left: 40, bottom: 40 };
 
