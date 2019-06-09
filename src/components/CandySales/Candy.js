@@ -14,7 +14,7 @@ function candyYTween(oldY, newY) {
 export default function Candy({ delay, x: propX, y: propY, type }) {
   const ref = React.createRef();
 
-  const [stateX, setStateX] = React.useState(Math.random() * 600);
+  const [stateX] = React.useState(Math.random() * 600);
   const [stateY, setStateY] = React.useState(Math.random() * -50);
 
   React.useEffect(() => {

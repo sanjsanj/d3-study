@@ -10,6 +10,7 @@ import UsSalaries from "../UsSalaries";
 import Alphabet from "../Alphabet";
 import ChristmasTrees from "../ChristmasTrees";
 import CandySales from "../CandySales";
+import Responsive from "../Responsive";
 
 function App() {
   return (
@@ -28,7 +29,9 @@ function App() {
 
       {/* <ChristmasTrees /> */}
 
-      <CandySales />
+      {/* <CandySales /> */}
+
+      <Responsive />
     </div>
   );
 }
