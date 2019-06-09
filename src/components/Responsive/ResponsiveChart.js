@@ -1,13 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { v4 } from "uuid";
 import * as d3 from "d3";
-import d3blackbox, { useD3 } from "d3blackbox";
+import { useD3 } from "d3blackbox";
 
 const BottomAxis = ({ scale, x, y }) => {
   const ref = useD3(anchor => {
-    // scale.domain(scale.domain().filter((_, i) => i % 5 === 0));
-
     const axis = d3
       .axisBottom()
       .scale(scale)
@@ -19,13 +16,26 @@ const BottomAxis = ({ scale, x, y }) => {
   return <g transform={`translate(${x}, ${y})`} ref={ref} />;
 };
 
+const LeftAxis = ({ scale, x, y }) => {
+  const ref = useD3(anchor => {
+    const axis = d3
+      .axisLeft()
+      .scale(scale)
+      .tickFormat(d => `${d}%`);
+
+    d3.select(anchor).call(axis);
+  });
+
+  return <g transform={`translate(${x}, ${y})`} ref={ref} />;
+};
+
 export default function ResponsiveChart({ data, width, height }) {
-  const ref = React.createRef();
+  const margin = { left: 40, bottom: 40 };
 
   const xScale = d3
     .scalePoint()
     .domain(data.map(d => d.year))
-    .range([0, width]);
+    .range([margin.left, width]);
 
   const yScale = d3
     .scaleLinear()
@@ -38,14 +48,15 @@ export default function ResponsiveChart({ data, width, height }) {
     .y(d => yScale(d.share))
     .curve(d3.curveMonotoneX);
 
-  // React.useEffect(() => {}, []);
-
   return (
-    <g>
-      <path d={line(data)} fill="none" stroke="#333" />
+    <>
+      <g>
+        <path d={line(data)} fill="none" stroke="#333" />
+      </g>
 
-      <BottomAxis scale={xScale} x={0} y={height - 50} />
-    </g>
+      <BottomAxis scale={xScale} x={0} y={height - margin.bottom} />
+      <LeftAxis scale={yScale} x={margin.left} y={-margin.bottom} />
+    </>
   );
 }
 
