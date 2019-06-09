@@ -39,8 +39,8 @@ export default function Responsive() {
     return () => window.removeEventListener("resize", measureSVG);
   }, [svgRef]);
 
-  function mouseEnter(d) {
-    setText(`${d.share}% in ${d.year}`);
+  function mouseEnter(e) {
+    setText(e.currentTarget.dataset.text);
   }
 
   function mouseLeave(e) {

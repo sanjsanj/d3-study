@@ -65,7 +65,8 @@ export default function ResponsiveChart({
         {data.map(d => (
           <circle
             style={{ fill: "none", stroke: "black", r: 6 }}
-            onMouseEnter={() => mouseEnter(d)}
+            data-text={`${d.share}% in ${d.year}`}
+            onMouseEnter={mouseEnter}
             onMouseLeave={mouseLeave}
             cy={yScale(d.share)}
             cx={xScale(d.year)}
